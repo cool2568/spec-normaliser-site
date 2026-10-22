@@ -1,0 +1,3 @@
+Spec Sheet Normaliser
+Copyright (c) 2026 Priyank Rajput. All rights reserved.
+This site is published for use in the browser; the source may not be copied, modified or redistributed.

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Spec Sheet Normaliser</title>
+  <!-- The saved theme before first paint, so a dark choice never flashes light. app.js keeps it in step. -->
+  <script>try { const t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch {}</script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7"/><path d="M8.5 7.5h11a1.5 1.5 0 0 1 1.5 1.5v10a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 7 19V9a1.5 1.5 0 0 1 1.5-1.5zM7 12h14M12.5 12v8.5"/></svg>
+      <h1>Spec Sheet Normaliser</h1>
+      <span class="pill">beta</span>
+    </div>
+    <div class="top-actions">
+      <span id="badge" class="badge"></span>
+      <button id="open-settings" type="button" class="btn ghost" aria-haspopup="dialog">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2 4h7.5M13 4h1M2 8h2M7.5 8H14M2 12h8.5M14 12h0"/><circle cx="11.2" cy="4" r="1.7"/><circle cx="5.8" cy="8" r="1.7"/><circle cx="12.2" cy="12" r="1.7"/></svg>
+        Settings
+      </button>
+      <fieldset id="theme" class="seg">
+        <legend class="vh">Theme</legend>
+        <label title="Theme: match the system"><input type="radio" name="theme" value="system" checked><span class="seg-face"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><rect x="2" y="2.5" width="12" height="8.5" rx="1.5"/><path d="M6 14h4M8 11v3"/></svg></span><span class="vh">System</span></label>
+        <label title="Theme: light"><input type="radio" name="theme" value="light"><span class="seg-face"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="2.75"/><path d="M8 1.5V3M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1.05 1.05M11.55 11.55l1.05 1.05M3.4 12.6l1.05-1.05M11.55 4.45l1.05-1.05"/></svg></span><span class="vh">Light</span></label>
+        <label title="Theme: dark"><input type="radio" name="theme" value="dark"><span class="seg-face"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M13.5 9.6A5.5 5.5 0 0 1 6.4 2.5a5.5 5.5 0 1 0 7.1 7.1z"/></svg></span><span class="vh">Dark</span></label>
+      </fieldset>
+    </div>
+  </header>
+
+  <main>
+    <section id="empty" class="empty" aria-labelledby="drop-title">
+      <div id="drop" class="drop">
+        <svg class="drop-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 5h15l10 10v26a2 2 0 0 1-2 2H13a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/><path d="M28 5v10h10"/><path d="M24.5 21v13M19 28.5l5.5 5.5 5.5-5.5"/></svg>
+        <h2 id="drop-title">Drop datasheets to compare</h2>
+        <p id="drop-sub">Battery storage or solar module PDFs, up to 10 at a time, anywhere on this page.</p>
+        <button id="choose" type="button" class="btn primary lg">Choose PDFs</button>
+      </div>
+      <ol class="steps">
+        <li><b>Drop datasheets</b><span>Battery or solar module PDFs, from any maker.</span></li>
+        <li><b>Check the table</b><span>One row per spec, in one set of units. Hover a value to see its source.</span></li>
+        <li><b>Copy to your sheet</b><span>One click, then paste into Google Sheets.</span></li>
+      </ol>
+      <p class="privacy"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>PDFs are read in this browser and never uploaded.</p>
+    </section>
+
+    <section id="workspace" class="workspace" aria-label="Comparison" hidden>
+      <div class="toolbar">
+        <button id="add" type="button" class="btn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg>Add datasheets</button>
+        <button id="copy" type="button" class="btn primary" disabled><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><rect x="5.5" y="5.5" width="8.5" height="8.5" rx="1.5"/><path d="M10.5 5.5V3.5a1.5 1.5 0 0 0-1.5-1.5H3.5A1.5 1.5 0 0 0 2 3.5V9a1.5 1.5 0 0 0 1.5 1.5h2"/></svg>Copy table</button>
+        <span id="count" class="count"></span>
+        <span class="divider" aria-hidden="true"></span>
+        <span id="mixed" class="note" hidden></span>
+        <label class="switch"><input id="best" type="checkbox" role="switch" checked>Highlight best values</label>
+      </div>
+      <ul id="fill" class="strip" aria-label="Fields filled per datasheet"></ul>
+      <div id="upsell" class="upsell" hidden>
+        <p id="upsell-text"></p>
+        <a id="upsell-upgrade" class="btn primary sm" target="_blank" rel="noopener">Upgrade to Pro</a>
+        <button id="have-key" type="button" class="btn sm">Enter a license key</button>
+        <button id="close-upsell" type="button" class="icon-btn" aria-label="Dismiss">×</button>
+      </div>
+      <div class="table-card" tabindex="0" role="region" aria-label="Comparison table, scrolls sideways">
+        <table id="table" class="show-best" aria-label="Datasheet comparison: one row per field, one column per datasheet"><thead id="thead"></thead></table>
+      </div>
+      <p class="hint">Hover a value to see the datasheet text it was read from. Values are found by pattern matching, so check anything you rely on against the sheet. A blank cell? Hover it and teach the label its datasheet prints.</p>
+    </section>
+  </main>
+  <input id="files" type="file" accept="application/pdf,.pdf" multiple hidden>
+
+  <dialog id="settings" class="drawer" aria-labelledby="settings-title">
+    <div class="drawer-body">
+      <div class="drawer-head">
+        <h2 id="settings-title">Settings</h2>
+        <button id="close-settings" type="button" class="icon-btn" aria-label="Close settings">×</button>
+      </div>
+      <section class="panel" aria-labelledby="plan-title">
+        <h3 id="plan-title">Plan</h3>
+        <p id="beta" hidden>Free beta: no limits.</p>
+        <div id="pro" class="panel-stack" hidden>
+          <p id="plan"></p>
+          <p id="limit"><a id="upgrade" target="_blank" rel="noopener">Upgrade</a></p>
+          <form id="activate" class="key-form">
+            <input id="key" class="field" required autocomplete="off" spellcheck="false" placeholder="License key" aria-label="License key">
+            <button class="btn primary">Activate</button>
+          </form>
+          <p><button id="remove" type="button" class="btn" hidden>Remove key</button></p>
+        </div>
+      </section>
+      <section class="panel" aria-labelledby="synonyms-title">
+        <h3 id="synonyms-title">Synonyms <span id="synonyms-count" class="badge"></span></h3>
+        <p>Labels you taught, tried before the built-in ones on every datasheet. They are kept in this browser. Export them as synonyms.json and import that file elsewhere to share one dictionary with a team; an import adds to the labels already here.</p>
+        <ul id="taught" class="taught"></ul>
+        <div class="row">
+          <button id="export" type="button" class="btn sm">Export</button>
+          <button id="import-button" type="button" class="btn sm">Import</button>
+          <input id="import" type="file" accept=".json,application/json" aria-label="Import synonyms.json" hidden>
+        </div>
+      </section>
+      <section class="panel" aria-labelledby="privacy-title">
+        <h3 id="privacy-title">Privacy</h3>
+        <p>Datasheets are read in your browser and never uploaded. A Pro license key is sent to Dodo Payments to validate it. No analytics.</p>
+        <p>Contact: <a href="mailto:darpan1871@gmail.com">darpan1871@gmail.com</a></p>
+      </section>
+    </div>
+    <div id="drawer-toasts" class="toasts" aria-live="polite"></div>
+  </dialog>
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
