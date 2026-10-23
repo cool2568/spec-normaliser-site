@@ -1,6 +1,6 @@
 import * as pdfjs from './vendor/pdf.min.mjs';
 import { BILLING, license } from './license.js';
-import { FIELD_SETS, normalise, pageText } from './normalise.js';
+import { FIELD_SETS, nameFromUrl, normalise, pageText } from './normalise.js';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL('./vendor/pdf.worker.min.mjs', import.meta.url).href;
 
@@ -367,6 +367,33 @@ $('files').onchange = (e) => {
   e.target.value = ''; // picking the same file again still fires change
 };
 
+// The Chrome side panel (manifest.json): while the tab beside it shows a PDF, Add PDF from this tab fetches it and
+// hands it to addFiles() as a dropped file. activeTab, granted by the click on the toolbar icon, lets this page see
+// that tab's URL and fetch it; a tab it can't see has no URL here, so the button hides.
+if (document.documentElement.dataset.context === 'extension') {
+  const tabUrl = async () => (await chrome.tabs.query({ active: true, currentWindow: true }))[0]?.url ?? '';
+  const pdfName = (url) => (/\.pdf$/i.test(nameFromUrl(url)) ? nameFromUrl(url) : '');
+  const refresh = async () => {
+    $('choose-tab').hidden = $('add-tab').hidden = !pdfName(await tabUrl());
+  };
+  refresh();
+  chrome.tabs.onActivated.addListener(refresh);
+  chrome.tabs.onUpdated.addListener(refresh);
+  $('choose-tab').onclick = $('add-tab').onclick = async () => {
+    const url = await tabUrl();
+    const name = pdfName(url);
+    const busy = name ? toast(`Fetching ${name}…`, 'busy') : null;
+    try {
+      const res = name && (await fetch(url)); // throws for file://, another extension's viewer page or no access
+      if (!res?.ok) throw new Error(res?.status);
+      addFiles([new File([await res.blob()], name, { type: 'application/pdf' })]);
+    } catch {
+      toast('Open the PDF directly in the tab, then try again, or drop the file here.', 'problem');
+    }
+    busy?.remove();
+  };
+}
+
 // Synonyms: a team shares one dictionary as synonyms.json; an import adds to the labels already here.
 $('export').onclick = () =>
   el('a', { href: `data:application/json;charset=utf-8,${encodeURIComponent(JSON.stringify(synonyms, null, 2))}`, download: 'synonyms.json' }).click();
@@ -387,7 +414,7 @@ $('import').onchange = async (e) => {
 };
 renderSynonyms();
 
-// Theme: system, light or dark, kept in localStorage "theme"; index.html applies it before the first paint.
+// Theme: system, light or dark, kept in localStorage "theme"; boot.js applies it before the first paint.
 $('theme').elements.theme.value = document.documentElement.dataset.theme ?? 'system';
 $('theme').onchange = (e) => {
   const theme = e.target.value;

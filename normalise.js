@@ -191,6 +191,17 @@ export function normalise(text, fileName = '', custom = undefined) {
   return { name, type, variants, fields: variants[pmax.indexOf(Math.max(...pmax))].fields };
 }
 
+/** The file name a URL ends in, decoded, without query or hash: "Datasheet.pdf" for ".../files/Datasheet.pdf?v=2"; '' for none. */
+export function nameFromUrl(url) {
+  let name = '';
+  try {
+    name = new URL(url).pathname.split('/').pop();
+    return decodeURIComponent(name);
+  } catch {
+    return name; // no URL: ''; a stray "%" in the name: as written
+  }
+}
+
 /** One page's pdf.js text items as visual lines: top to bottom, left to right. */
 export function pageText(items) {
   const lines = [];

@@ -1,5 +1,5 @@
 /* Spec Sheet Normaliser. Tokens first: light by default, dark by the system's preference unless the theme switch
-   says otherwise ([data-theme] on <html>, set before first paint by index.html and kept by app.js). One accent,
+   says otherwise ([data-theme] on <html>, set before first paint by boot.js and kept by app.js). One accent,
    teal, for primary actions, focus and best values; greys for everything else. */
 :root {
   color-scheme: light;
@@ -636,3 +636,14 @@ dialog.drawer::backdrop { background: rgb(8 12 12 / 0.4); }
   .toasts { right: var(--s-4); bottom: var(--s-4); }
   dialog.drawer { border-left: 0; }
 }
+
+/* The Chrome side panel (data-context="extension" on <html>, set by boot.js), 360 to 420 px wide: the phone layout
+   above with tighter gutters and a compact drop zone. */
+[data-context="extension"] { --gutter: var(--s-3); }
+[data-context="extension"] .top { padding-block: var(--s-2); }
+[data-context="extension"] main { padding-block: var(--s-3); }
+[data-context="extension"] .drop { gap: var(--s-2); padding: var(--s-5) var(--s-4); }
+[data-context="extension"] .drop-icon { width: 36px; height: 36px; }
+[data-context="extension"] .drop h2 { font-size: 17px; }
+[data-context="extension"] .drop .btn { min-width: 13rem; } /* Choose PDFs and Add PDF from this tab, stacked */
+[data-context="extension"] #add-tab { flex-basis: 100%; } /* the toolbar's Add PDF from this tab, a row of its own */
