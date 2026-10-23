@@ -639,6 +639,7 @@ dialog.drawer::backdrop { background: rgb(8 12 12 / 0.4); }
 
 /* The Chrome side panel (data-context="extension" on <html>, set by boot.js), 360 to 420 px wide: the phone layout
    above with tighter gutters and a compact drop zone. */
+:root:not([data-context="extension"]) .ext-only { display: none; } /* Add PDF from this tab: the side panel only */
 [data-context="extension"] { --gutter: var(--s-3); }
 [data-context="extension"] .top { padding-block: var(--s-2); }
 [data-context="extension"] main { padding-block: var(--s-3); }

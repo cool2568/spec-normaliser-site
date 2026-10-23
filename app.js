@@ -367,30 +367,35 @@ $('files').onchange = (e) => {
   e.target.value = ''; // picking the same file again still fires change
 };
 
-// The Chrome side panel (manifest.json): while the tab beside it shows a PDF, Add PDF from this tab fetches it and
-// hands it to addFiles() as a dropped file. activeTab, granted by the click on the toolbar icon, lets this page see
-// that tab's URL and fetch it; a tab it can't see has no URL here, so the button hides.
+// The Chrome side panel (manifest.json): Add PDF from this tab reads the PDF the active tab shows and hands it to
+// addFiles() as a dropped file. Chrome shows this page a tab's URL only after a click on the toolbar icon while that
+// tab is active (activeTab). fetch() refuses file: URLs, so a local PDF goes through XMLHttpRequest, which reads it
+// once "Allow access to file URLs" is on for the extension.
 if (document.documentElement.dataset.context === 'extension') {
-  const tabUrl = async () => (await chrome.tabs.query({ active: true, currentWindow: true }))[0]?.url ?? '';
-  const pdfName = (url) => (/\.pdf$/i.test(nameFromUrl(url)) ? nameFromUrl(url) : '');
-  const refresh = async () => {
-    $('choose-tab').hidden = $('add-tab').hidden = !pdfName(await tabUrl());
-  };
-  refresh();
-  chrome.tabs.onActivated.addListener(refresh);
-  chrome.tabs.onUpdated.addListener(refresh);
+  const readLocal = (url) => new Promise((resolve, reject) => {
+    const x = Object.assign(new XMLHttpRequest(), { responseType: 'blob', onload: () => resolve(x.response), onerror: reject });
+    x.open('GET', url);
+    x.send();
+  });
   $('choose-tab').onclick = $('add-tab').onclick = async () => {
-    const url = await tabUrl();
-    const name = pdfName(url);
-    const busy = name ? toast(`Fetching ${name}…`, 'busy') : null;
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (!tab?.url) return toast('Click the Spec Sheet Normaliser icon while this tab is active, then try again.', 'problem');
+    const local = tab.url.startsWith('file:');
+    const host = new URL(tab.url).hostname;
+    const at = host ? ` (${host})` : '';
+    const urlName = nameFromUrl(tab.url);
+    const name = /\.pdf$/i.test(urlName) ? urlName : `${(tab.title || 'datasheet').replace(/\.pdf$/i, '')}.pdf`;
+    const busy = toast(`Fetching ${name}…`, 'busy');
+    let blob = null;
     try {
-      const res = name && (await fetch(url)); // throws for file://, another extension's viewer page or no access
-      if (!res?.ok) throw new Error(res?.status);
-      addFiles([new File([await res.blob()], name, { type: 'application/pdf' })]);
-    } catch {
-      toast('Open the PDF directly in the tab, then try again, or drop the file here.', 'problem');
-    }
-    busy?.remove();
+      blob = local ? await readLocal(tab.url) : await fetch(tab.url, { credentials: 'include' }).then((r) => (r.ok ? r.blob() : null));
+    } catch {} // blocked (CORS), offline, or no access to file URLs: no blob
+    busy.remove();
+    // A PDF by its bytes, whatever its URL or content type: "%PDF-" within the first 1 KB, as PDF readers accept it.
+    if (blob && (await blob.slice(0, 1024).text()).includes('%PDF-')) addFiles([new File([blob], name, { type: 'application/pdf' })]);
+    else if (local) toast('This is a local file. Drag it into the panel, or turn on "Allow access to file URLs" for this extension in chrome://extensions and try again.', 'problem');
+    else if (blob) toast(`This tab${at} is not a PDF. Open the PDF itself, then try again.`, 'problem');
+    else toast(`Chrome blocked reading this tab${at}. Download the PDF and drop it here.`, 'problem');
   };
 }
 
