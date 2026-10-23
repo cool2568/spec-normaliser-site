@@ -3,7 +3,7 @@
 // the Node tests need no browser. https://docs.dodopayments.com/api-reference/licenses/activate-license
 // ponytail: honour system. Anyone can edit localStorage; only a server could enforce Pro, and this page has none.
 
-export const BILLING = { freeBeta: true, apiBase: 'https://test.dodopayments.com', checkoutUrl: 'DODO_CHECKOUT_URL', freeLimit: 3 };
+export const BILLING = { freeBeta: true, apiBase: 'https://test.dodopayments.com', checkoutUrl: 'https://checkout.dodopayments.com/buy/pdt_0NqMGlUuo1RfdcYWhwsgG?quantity=1&redirect_url=https://cool2568.github.io/spec-normaliser-site/', freeLimit: 3 };
 
 const DAY = 864e5;
 const FREE = { key: '', instanceId: '', validatedAt: 0, status: 'free' };
