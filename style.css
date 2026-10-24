@@ -190,7 +190,8 @@ svg { flex: none; }
 .logo { width: 26px; height: 26px; }
 .logo rect { fill: var(--accent); }
 .logo path { fill: none; stroke: var(--on-accent); stroke-width: 1.75; stroke-linejoin: round; }
-.brand h1 { font-size: 15px; font-weight: 650; letter-spacing: -0.01em; white-space: nowrap; }
+.brand h1, .brand b { font-size: 15px; font-weight: 650; letter-spacing: -0.01em; white-space: nowrap; }
+a.brand { color: inherit; text-decoration: none; } /* the comparison pages' header, back to the app */
 .pill {
   padding: 1px 7px;
   border: 1px solid var(--border-strong);
@@ -616,6 +617,34 @@ dialog.drawer::backdrop { background: rgb(8 12 12 / 0.4); }
 .toast .icon-btn { width: 24px; height: 24px; color: inherit; }
 @keyframes toast-in { from { transform: translateY(8px); opacity: 0; } }
 
+/* Footer: the app's (not in the side panel, which has no comparison pages) and the comparison pages'. */
+.foot {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1) var(--s-4);
+  padding: var(--s-2) var(--gutter);
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 12.5px;
+}
+[data-context="extension"] .foot { display: none; }
+
+/* Comparison pages (compare/, written by gen-compare.mjs): a document that scrolls as a whole, with the app's
+   header, table and buttons. */
+.doc { height: auto; min-height: 100vh; }
+.doc main { display: block; width: 100%; max-width: 64rem; margin: 0 auto; }
+.doc main > * + *, .doc section > * + * { margin-top: var(--s-4); }
+.doc main > section { margin-top: var(--s-6); }
+.doc h1 { font-size: 26px; font-weight: 650; line-height: 1.25; letter-spacing: -0.015em; }
+.doc h2 { font-size: 17px; font-weight: 650; }
+.doc h3 { font-size: 14px; font-weight: 600; }
+.doc p, .doc li { max-width: 75ch; }
+.doc .lede { font-size: 15.5px; }
+.doc ul { margin-bottom: 0; padding-left: 1.25em; }
+.doc li + li { margin-top: 2px; }
+th.product > .pill { display: inline-block; margin-top: var(--s-2); } /* the power class compared, under its name */
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
@@ -635,6 +664,7 @@ dialog.drawer::backdrop { background: rgb(8 12 12 / 0.4); }
   tbody th[scope="row"] { width: 8.5rem; min-width: 8.5rem; white-space: normal; }
   .toasts { right: var(--s-4); bottom: var(--s-4); }
   dialog.drawer { border-left: 0; }
+  .doc h1 { font-size: 21px; }
 }
 
 /* The Chrome side panel (data-context="extension" on <html>, set by boot.js), 360 to 420 px wide: the phone layout

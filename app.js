@@ -1,6 +1,6 @@
 import * as pdfjs from './vendor/pdf.min.mjs';
 import { BILLING, license } from './license.js';
-import { FIELD_SETS, nameFromUrl, normalise, pageText } from './normalise.js';
+import { FIELD_SETS, bestOf, nameFromUrl, normalise, pageText, sections } from './normalise.js';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL('./vendor/pdf.worker.min.mjs', import.meta.url).href;
 
@@ -66,59 +66,6 @@ const tableType = () => products[0]?.type ?? 'battery';
 const key = (name) => name.replace(/^Dimensions .*/, 'Dimensions'); // "Dimensions W×D×H" = "Dimensions L×W×H"
 const valueOf = (p, f) => Object.entries(p.fields).find(([k]) => key(k) === key(f.name))?.[1];
 const variantOf = (p) => p.variants?.find((v) => v.fields === p.fields);
-
-// The table's row groups, in order; each keeps its fields in FIELDS order. A field not named here still shows, under
-// "Other", so a field added to normalise.js can't go missing from the table or the copy.
-const GROUPS = {
-  battery: {
-    Identity: ['Product name', 'Manufacturer', 'Chemistry'],
-    'Energy & power': ['Nominal energy', 'Usable energy', 'Max continuous charge power', 'Max continuous discharge power'],
-    Electrical: ['Nominal voltage', 'Voltage range', 'Max continuous current'],
-    Performance: ['Round-trip efficiency', 'Depth of discharge', 'Cycle life', 'Operating temperature'],
-    Mechanical: ['Weight', 'Dimensions W×D×H', 'IP rating'],
-    'Warranty & certification': ['Design life or warranty', 'Certifications'],
-  },
-  solar: {
-    Identity: ['Product name', 'Manufacturer', 'Cell technology', 'Cell count'],
-    'Electrical (STC)': ['Max power Pmax', 'Module efficiency', 'Vmp', 'Imp', 'Voc', 'Isc', 'Power tolerance', 'Max system voltage', 'Max series fuse', 'Bifaciality'],
-    Temperature: ['Temperature coefficient of Pmax', 'Temperature coefficient of Voc', 'Temperature coefficient of Isc', 'NMOT or NOCT', 'Max power at NMOT/NOCT', 'Operating temperature'],
-    Mechanical: ['Dimensions L×W×H', 'Weight', 'Glass', 'Frame', 'Connector'],
-    'Warranty & degradation': ['Product warranty', 'Power warranty', 'First-year degradation', 'Annual degradation'],
-    Certification: ['Certifications'],
-  },
-};
-const sections = () => {
-  const fields = FIELD_SETS[tableType()];
-  const groups = Object.entries(GROUPS[tableType()]).map(([title, names]) => [title, fields.filter((f) => names.includes(f.name))]);
-  const rest = fields.filter((f) => !groups.some(([, group]) => group.includes(f)));
-  return rest.length ? [...groups, ['Other', rest]] : groups;
-};
-
-// Best value per row, scored so that higher wins: more energy, efficiency, power, cycles, warranty; less weight and
-// degradation; a temperature coefficient nearest zero.
-const more = (n) => n;
-const less = (n) => -n;
-const nearZero = (n) => -Math.abs(n);
-const BEST = {
-  'Nominal energy': more, 'Usable energy': more, 'Round-trip efficiency': more, 'Depth of discharge': more, 'Cycle life': more,
-  'Design life or warranty': more, 'Max power Pmax': more, 'Module efficiency': more, 'Max power at NMOT/NOCT': more,
-  Bifaciality: more, 'Product warranty': more, 'Power warranty': more,
-  Weight: less, 'First-year degradation': less, 'Annual degradation': less,
-  'Temperature coefficient of Pmax': nearZero, 'Temperature coefficient of Voc': nearZero,
-};
-// Which columns hold the row's best: numbers in the row's own unit only (never Ah against kWh), at least two of
-// them, and not all equal (a dot on every cell says nothing). Ties all win.
-function bestOf(f) {
-  const score = BEST[f.name];
-  if (!score) return [];
-  const s = products.map((p) => {
-    const v = valueOf(p, f);
-    return typeof v?.value === 'number' && v.unit === f.unit ? score(v.value) : NaN;
-  });
-  const known = s.filter((x) => !Number.isNaN(x));
-  const top = Math.max(...known);
-  return known.length > 1 && known.some((x) => x !== top) ? s.map((x) => x === top) : [];
-}
 
 function addFiles(fileList) {
   const files = [...fileList]; // now: a drop's files and a cleared <input>'s list are gone later
@@ -284,10 +231,10 @@ const rowOf = new Map(); // field name -> its <tr>
 function renderBody() {
   for (const b of bodies) b.remove();
   rowOf.clear();
-  bodies = sections().map(([title, fields]) => el('tbody', {},
+  bodies = sections(tableType()).map(([title, fields]) => el('tbody', {},
     el('tr', { className: 'group' }, el('th', { scope: 'rowgroup', colSpan: products.length + 1 }, el('span', { textContent: title }))),
     ...fields.map((f) => {
-      const best = bestOf(f);
+      const best = bestOf(f, products.map((p) => valueOf(p, f)));
       const numeric = products.some((p) => typeof valueOf(p, f)?.value === 'number');
       const tr = el('tr', { className: numeric ? 'num' : '' }, el('th', { scope: 'row', textContent: f.name }), ...products.map((p, i) => cell(p, f, i, best[i])));
       rowOf.set(f.name, tr);
@@ -334,7 +281,7 @@ $('copy').onclick = async () => {
     const s = cellText(valueOf(p, f) ?? { value: '' }, f);
     return f.name === 'Product name' && variantOf(p) ? `${s} ${variantOf(p).name}` : s;
   };
-  const rows = [['File', ...products.map((p) => p.file)], ...sections().flatMap(([, fields]) => fields).map((f) => [rowLabel(f), ...products.map((p) => text(p, f))])];
+  const rows = [['File', ...products.map((p) => p.file)], ...sections(tableType()).flatMap(([, fields]) => fields).map((f) => [rowLabel(f), ...products.map((p) => text(p, f))])];
   // A tab or line break would split a cell. Text from a PDF starting with = + @ or "-x" would run as a
   // formula in Sheets, so it gets a leading ' (temperatures like "-10–50" start with "-" and a digit).
   const tsv = rows.map((r) => r.map((c) => c.replace(/\s+/g, ' ').replace(/^(?:[=+@]|-(?!\d))/, "'$&")).join('\t')).join('\n');

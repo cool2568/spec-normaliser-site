@@ -131,6 +131,63 @@ export const SOLAR_FIELDS = [
 
 export const FIELD_SETS = { battery: FIELDS, solar: SOLAR_FIELDS };
 
+// The comparison table, shared by app.js and gen-compare.mjs: its row groups, in order, each keeping its fields in
+// field-set order. A field not named here still shows, under "Other", so a field added above can't go missing from
+// the table or the copy.
+const GROUPS = {
+  battery: {
+    Identity: ['Product name', 'Manufacturer', 'Chemistry'],
+    'Energy & power': ['Nominal energy', 'Usable energy', 'Max continuous charge power', 'Max continuous discharge power'],
+    Electrical: ['Nominal voltage', 'Voltage range', 'Max continuous current'],
+    Performance: ['Round-trip efficiency', 'Depth of discharge', 'Cycle life', 'Operating temperature'],
+    Mechanical: ['Weight', 'Dimensions W×D×H', 'IP rating'],
+    'Warranty & certification': ['Design life or warranty', 'Certifications'],
+  },
+  solar: {
+    Identity: ['Product name', 'Manufacturer', 'Cell technology', 'Cell count'],
+    'Electrical (STC)': ['Max power Pmax', 'Module efficiency', 'Vmp', 'Imp', 'Voc', 'Isc', 'Power tolerance', 'Max system voltage', 'Max series fuse', 'Bifaciality'],
+    Temperature: ['Temperature coefficient of Pmax', 'Temperature coefficient of Voc', 'Temperature coefficient of Isc', 'NMOT or NOCT', 'Max power at NMOT/NOCT', 'Operating temperature'],
+    Mechanical: ['Dimensions L×W×H', 'Weight', 'Glass', 'Frame', 'Connector'],
+    'Warranty & degradation': ['Product warranty', 'Power warranty', 'First-year degradation', 'Annual degradation'],
+    Certification: ['Certifications'],
+  },
+};
+
+/** The table's row groups for a type ('battery' or 'solar'): [title, fields] pairs, in order. */
+export function sections(type) {
+  const fields = FIELD_SETS[type];
+  const groups = Object.entries(GROUPS[type]).map(([title, names]) => [title, fields.filter((f) => names.includes(f.name))]);
+  const rest = fields.filter((f) => !groups.some(([, group]) => group.includes(f)));
+  return rest.length ? [...groups, ['Other', rest]] : groups;
+}
+
+// Best value per row, scored so that higher wins: more energy, efficiency, power, cycles, warranty; less weight and
+// degradation; a temperature coefficient nearest zero.
+const more = (n) => n;
+const less = (n) => -n;
+const nearZero = (n) => -Math.abs(n);
+const BEST = {
+  'Nominal energy': more, 'Usable energy': more, 'Round-trip efficiency': more, 'Depth of discharge': more, 'Cycle life': more,
+  'Design life or warranty': more, 'Max power Pmax': more, 'Module efficiency': more, 'Max power at NMOT/NOCT': more,
+  Bifaciality: more, 'Product warranty': more, 'Power warranty': more,
+  Weight: less, 'First-year degradation': less, 'Annual degradation': less,
+  'Temperature coefficient of Pmax': nearZero, 'Temperature coefficient of Voc': nearZero,
+};
+
+/**
+ * Which of a row's values (one per column, as normalise() gives them) hold its best, as booleans; [] for none. Numbers
+ * in the row's own unit only (never Ah against kWh), at least two of them, and not all equal (a dot on every cell
+ * says nothing). Ties all win.
+ */
+export function bestOf(f, values) {
+  const score = BEST[f.name];
+  if (!score) return [];
+  const s = values.map((v) => (typeof v?.value === 'number' && v.unit === f.unit ? score(v.value) : NaN));
+  const known = s.filter((x) => !Number.isNaN(x));
+  const top = Math.max(...known);
+  return known.length > 1 && known.some((x) => x !== top) ? s.map((x) => x === top) : [];
+}
+
 // Counted: a module sheet names Pmax, Voc and Isc in every table row, a battery sheet its kWh and cycles. A
 // battery with solar inputs (Powerwall 3) names Isc and Imp per MPPT too, so batteries, discharge and MPPTs count.
 const SOLAR_MARKS = /\bP\s?max\b|\bV\s?oc\b|\bI\s?sc\b|\bV\s?mpp?\b|\bI\s?mpp?\b|open[\s-]circuit|short[\s-]circuit current|module efficiency|\bN(?:OCT|MOT)\b|bi-?facial|half[\s-]cut|series fuse/gi;
