@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>LFP vs NMC for home and C&amp;I storage: what the datasheet tells you</title>
+<meta name="description" content="How LFP and NMC batteries differ on a datasheet: cell voltage, energy per kilogram, thermal behaviour, cycle life, temperature range and certifications.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://cool2568.github.io/spec-normaliser-site/guides/lfp-vs-nmc-home-battery.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Spec Sheet Normaliser">
+<meta property="og:title" content="LFP vs NMC for home and C&amp;I storage: what the datasheet tells you">
+<meta property="og:description" content="How LFP and NMC batteries differ on a datasheet: cell voltage, energy per kilogram, thermal behaviour, cycle life, temperature range and certifications.">
+<meta property="og:url" content="https://cool2568.github.io/spec-normaliser-site/guides/lfp-vs-nmc-home-battery.html">
+<meta property="og:image" content="https://cool2568.github.io/spec-normaliser-site/og/default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../style.css">
+<!-- For search engines: the title, description and FAQ answers below repeat the page's own; edit both together. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "LFP vs NMC for home and C&I storage: what the datasheet tells you",
+      "description": "How LFP and NMC batteries differ on a datasheet: cell voltage, energy per kilogram, thermal behaviour, cycle life, temperature range and certifications.",
+      "image": "https://cool2568.github.io/spec-normaliser-site/og/default.png",
+      "datePublished": "2026-10-24",
+      "dateModified": "2026-10-24",
+      "author": {
+        "@type": "Organization",
+        "name": "Spec Sheet Normaliser",
+        "url": "https://cool2568.github.io/spec-normaliser-site/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Spec Sheet Normaliser",
+        "url": "https://cool2568.github.io/spec-normaliser-site/"
+      },
+      "mainEntityOfPage": "https://cool2568.github.io/spec-normaliser-site/guides/lfp-vs-nmc-home-battery.html"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Spec Sheet Normaliser",
+          "item": "https://cool2568.github.io/spec-normaliser-site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Guides",
+          "item": "https://cool2568.github.io/spec-normaliser-site/guides/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "LFP vs NMC for home and C&I storage: what the datasheet tells you",
+          "item": "https://cool2568.github.io/spec-normaliser-site/guides/lfp-vs-nmc-home-battery.html"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How can I tell the chemistry from a datasheet?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Look for a Chemistry, Battery type or Cell type row, or a cell voltage window in the footnotes. A pack voltage that is a multiple of 3.2 V suggests LFP but doesn't prove it; if the sheet names no chemistry, ask the manufacturer."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is LFP safer than NMC?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "LFP cells are more thermally stable, but a system's safety also depends on its design, battery management and installation. Compare products on their certificates and test reports, such as IEC 62619, UL 9540 and UL 9540A."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is the charging temperature range narrower than the discharging range?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Charging a graphite anode in the cold risks lithium plating, which damages the cell, so many batteries stop charging below about 0 °C while still allowing discharge."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body class="doc">
+<header class="top">
+<a class="brand" href="../"><svg class="logo" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7"/><path d="M8.5 7.5h11a1.5 1.5 0 0 1 1.5 1.5v10a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 7 19V9a1.5 1.5 0 0 1 1.5-1.5zM7 12h14M12.5 12v8.5"/></svg><b>Spec Sheet Normaliser</b></a>
+<a class="btn" href="../">Open the app</a>
+</header>
+<main>
+<nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="../">Spec Sheet Normaliser</a></li><li><a href="./">Guides</a></li><li aria-current="page">LFP vs NMC for home and C&amp;I storage: what the datasheet tells you</li></ol></nav>
+<article>
+<h1>LFP vs NMC for home and C&amp;I storage: what the datasheet tells you</h1>
+<p class="lede">Lithium iron phosphate (LFP) and nickel manganese cobalt (NMC) are both lithium-ion chemistries, but they differ in cell voltage, energy per kilogram and behaviour at high temperature, and those differences show up in particular datasheet rows. This guide shows where to look, using the battery datasheets behind our comparison pages.</p>
+<h2>Two cathodes</h2>
+<p>The names describe the cathode. LFP uses lithium iron phosphate (LiFePO4); NMC, also written NCM or called ternary, uses a lithium oxide of nickel, manganese and cobalt. Both usually pair with a graphite anode. A datasheet names the chemistry in a Chemistry, Battery type or Cell type row, as LFP, LiFePO4 or lithium iron phosphate. Six of the eight battery datasheets on our comparison pages state LFP; the Pylontech US5000 and Tesla Powerwall 3 sheets name no chemistry in their text, so ask the manufacturer.</p>
+<h2>Cell voltage: a hint, not proof</h2>
+<p>An LFP cell has a nominal voltage of about 3.2 V and is charged to about 3.65 V; an NMC cell is about 3.6 to 3.7 V nominal and is charged to about 4.2 V. A pack's nominal voltage is the cell voltage times the number of cells in series, and all seven nominal voltages on our battery pages are whole multiples of 3.2 V: 48 V is 15 cells (Pylontech, Dyness), 51.2 V is 16 (GoodWe), 76.8 V is 24 (Enphase), 96 V is 30 (Alpha ESS), 128 V is 40 (Sungrow) and 204.8 V is 64 (BYD). That is a hint only, since 13 NMC cells at 3.7 V make 48.1 V. GoodWe's footnotes go further and give the cell window its rated energy is tested over, 2.5 to 3.65 V, which is an LFP window.</p>
+<h2>Energy per kilogram</h2>
+<p>At cell level, NMC stores more energy per kilogram and per litre than LFP. At system level, the enclosure, the battery management, the wiring and, in some units, an inverter add weight, and they vary between products more than the chemistry does. Dividing each battery's energy by its weight shows a spread of more than two to one, although every battery here whose sheet names a chemistry is LFP:</p>
+<div class="table-card" tabindex="0" role="region" aria-label="Energy per kilogram, scrolls sideways">
+<table>
+<caption class="vh">Energy per kilogram of eight batteries, from their datasheets</caption>
+<thead><tr><th scope="col">Battery</th><th scope="col">Energy on the sheet</th><th scope="col">Weight</th><th scope="col">Wh per kg</th></tr></thead>
+<tbody>
+<tr><th scope="row">Pylontech US5000</th><td>4.8 kWh nominal</td><td>38 kg</td><td>126</td></tr>
+<tr><th scope="row">Alpha ESS SMILE-G3-BAT-10.1P</th><td>10.1 kWh nominal</td><td>90 kg</td><td>112</td></tr>
+<tr><th scope="row">Tesla Powerwall 3, inverter included</th><td>13.5 kWh nominal, AC</td><td>130 kg</td><td>104</td></tr>
+<tr><th scope="row">GoodWe Lynx Home U LX U5.4-L</th><td>5.4 kWh rated</td><td>57 kg</td><td>95</td></tr>
+<tr><th scope="row">Enphase IQ Battery 5P, microinverters included</th><td>5 kWh usable</td><td>66.3 kg lifting weight</td><td>75</td></tr>
+<tr><th scope="row">Sungrow SBR064</th><td>6.4 kWh usable</td><td>89 kg</td><td>72</td></tr>
+<tr><th scope="row">BYD Battery-Box Premium HVS 5.1</th><td>5.12 kWh usable</td><td>91 kg</td><td>56</td></tr>
+<tr><th scope="row">Dyness Powerbox F-2.5</th><td>2.4 kWh nominal</td><td>47 kg</td><td>51</td></tr>
+</tbody>
+</table>
+</div>
+<p>So a light datasheet weight says more about the packaging than about the chemistry. When space or wall loading matters, compare weight and size per usable kilowatt-hour directly.</p>
+<h2>Thermal behaviour and safety standards</h2>
+<p>LFP's phosphate cathode is more stable at high temperature than NMC's layered oxide and releases less oxygen as it breaks down, so an LFP cell goes into thermal runaway at a higher temperature and releases less heat when it does. That is a property of cells, and datasheets don't print a runaway temperature. What they list are certifications, which test the product and apply to either chemistry: IEC 62619 (safety of industrial lithium cells and batteries, including stationary storage), UL 1973 (stationary batteries), UL 9540 (the complete energy storage system), UL 9540A (a test method that measures whether thermal runaway spreads from cell to module to unit) and UN 38.3 (transport). Tesla lists UL 9540, UL 9540A and UL 1973; Enphase lists UL 9540A and IEC 62619. Ask for the certificates and, for UL 9540A, the test report.</p>
+<h2>Cycle life and temperature range</h2>
+<p>The cycle life figures on our battery pages are 6000 cycles (Dyness, Enphase, Pylontech) and 8000 (Alpha ESS). Chemistry alone doesn't set that number; the depth of discharge, rate, temperature and end-of-life capacity of the test do, so compare an LFP and an NMC product only under the same test conditions.</p>
+<p>Cold charging is limited for both chemistries, because charging a graphite anode below about 0 °C risks lithium plating. That is why several sheets give a narrower charging range: Pylontech charges from 0 °C to 55 °C and discharges from −10 °C to 55 °C; Sungrow charges from 0 °C to 50 °C and discharges from −20 °C to 50 °C. Our comparison pages show the discharge range.</p>
+<h2>Choosing between them</h2>
+<p>Neither chemistry wins every row. Where weight or volume is the hard limit, NMC's higher cell energy density can help; where thermal margin or a cobalt-free and nickel-free cell matters more, LFP fits. Either way, judge a product by its own datasheet rows and certificates, not by the chemistry's name. <a href="how-to-compare-battery-datasheets.html">How to compare battery storage datasheets</a> goes through those rows.</p>
+<p class="callout"><b>Verify against the manufacturer's datasheet.</b> The figures here come from the datasheets behind our comparison pages, each linked from its page. Datasheets are revised and regional versions differ, so check the chemistry, every number and every certificate against the manufacturer's current documents before you specify or buy.</p>
+<h2 id="faq">FAQ</h2>
+<h3>How can I tell the chemistry from a datasheet?</h3>
+<p>Look for a Chemistry, Battery type or Cell type row, or a cell voltage window in the footnotes. A pack voltage that is a multiple of 3.2 V suggests LFP but doesn't prove it; if the sheet names no chemistry, ask the manufacturer.</p>
+<h3>Is LFP safer than NMC?</h3>
+<p>LFP cells are more thermally stable, but a system's safety also depends on its design, battery management and installation. Compare products on their certificates and test reports, such as IEC 62619, UL 9540 and UL 9540A.</p>
+<h3>Why is the charging temperature range narrower than the discharging range?</h3>
+<p>Charging a graphite anode in the cold risks lithium plating, which damages the cell, so many batteries stop charging below about 0 °C while still allowing discharge.</p>
+<h2>Related comparisons</h2>
+<ul>
+<li><a href="../compare/pylontech-us5000-vs-tesla-powerwall-3.html">Pylontech US5000 vs Tesla Powerwall 3</a></li>
+<li><a href="../compare/byd-battery-box-premium-hvs-5-1-vs-enphase-iq-battery-5p.html">BYD Battery-Box Premium HVS 5.1 vs Enphase IQ Battery 5P</a></li>
+<li><a href="../compare/alpha-ess-smile-g3-bat-10-1p-vs-goodwe-lynx-home-u-lx-u5-4-l.html">Alpha ESS SMILE-G3-BAT-10.1P vs GoodWe Lynx Home U LX U5.4-L</a></li>
+</ul>
+<p><a class="btn primary lg" href="../">Compare your own datasheets</a></p>
+</article>
+</main>
+<footer class="foot"><a href="./">All guides</a><a href="../compare/">All comparisons</a><a href="../privacy.html">Privacy</a><a href="https://cool2568.github.io/tender-radar-site/terms.html">Terms</a></footer>
+</body>
+</html>

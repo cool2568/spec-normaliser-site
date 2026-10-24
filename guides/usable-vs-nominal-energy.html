@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Usable energy vs nominal energy in battery datasheets</title>
+<meta name="description" content="Why battery datasheets quote nominal and usable energy, how depth of discharge links them, and how to normalise two sheets to usable kWh before comparing.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://cool2568.github.io/spec-normaliser-site/guides/usable-vs-nominal-energy.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Spec Sheet Normaliser">
+<meta property="og:title" content="Usable energy vs nominal energy in battery datasheets">
+<meta property="og:description" content="Why battery datasheets quote nominal and usable energy, how depth of discharge links them, and how to normalise two sheets to usable kWh before comparing.">
+<meta property="og:url" content="https://cool2568.github.io/spec-normaliser-site/guides/usable-vs-nominal-energy.html">
+<meta property="og:image" content="https://cool2568.github.io/spec-normaliser-site/og/default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../style.css">
+<!-- For search engines: the title, description and FAQ answers below repeat the page's own; edit both together. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "Usable energy vs nominal energy in battery datasheets",
+      "description": "Why battery datasheets quote nominal and usable energy, how depth of discharge links them, and how to normalise two sheets to usable kWh before comparing.",
+      "image": "https://cool2568.github.io/spec-normaliser-site/og/default.png",
+      "datePublished": "2026-10-24",
+      "dateModified": "2026-10-24",
+      "author": {
+        "@type": "Organization",
+        "name": "Spec Sheet Normaliser",
+        "url": "https://cool2568.github.io/spec-normaliser-site/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Spec Sheet Normaliser",
+        "url": "https://cool2568.github.io/spec-normaliser-site/"
+      },
+      "mainEntityOfPage": "https://cool2568.github.io/spec-normaliser-site/guides/usable-vs-nominal-energy.html"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Spec Sheet Normaliser",
+          "item": "https://cool2568.github.io/spec-normaliser-site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Guides",
+          "item": "https://cool2568.github.io/spec-normaliser-site/guides/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Usable energy vs nominal energy in battery datasheets",
+          "item": "https://cool2568.github.io/spec-normaliser-site/guides/usable-vs-nominal-energy.html"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is depth of discharge?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The share of a battery's nominal capacity used in one cycle. A 10 kWh battery cycled at 90% depth of discharge delivers about 9 kWh per cycle."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can usable energy be higher than nominal energy?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Not when both are measured the same way. If a sheet shows usable energy above nominal, the two figures come from different conditions or definitions, so ask the manufacturer which applies."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which figure should I use to compare prices?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Usable energy, measured at the same point (DC or AC) on both sheets. Price per usable kWh is the fair basis; price per nominal kWh flatters a battery that holds back more of its capacity."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body class="doc">
+<header class="top">
+<a class="brand" href="../"><svg class="logo" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7"/><path d="M8.5 7.5h11a1.5 1.5 0 0 1 1.5 1.5v10a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 7 19V9a1.5 1.5 0 0 1 1.5-1.5zM7 12h14M12.5 12v8.5"/></svg><b>Spec Sheet Normaliser</b></a>
+<a class="btn" href="../">Open the app</a>
+</header>
+<main>
+<nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="../">Spec Sheet Normaliser</a></li><li><a href="./">Guides</a></li><li aria-current="page">Usable energy vs nominal energy in battery datasheets</li></ol></nav>
+<article>
+<h1>Usable energy vs nominal energy in battery datasheets</h1>
+<p class="lede">Nominal energy is what the cells hold on paper; usable energy is what the battery management system lets you take out. On the datasheets behind our comparison pages the gap runs from 5% to 11%, so normalise to usable energy before you compare sizes or prices.</p>
+<h2>Two numbers, two meanings</h2>
+<p><b>Nominal energy</b>, also printed as rated energy, energy capacity or nominal capacity, is the cells' rated charge times the battery's nominal voltage. The Dyness Powerbox F-2.5 is 50 Ah at 48 V, which is 2.4 kWh; the Pylontech US5000's 4.8 kWh at 48 V works out to 100 Ah. A figure in ampere-hours is a charge, not an energy, so it compares only with a battery of the same voltage: multiply by the nominal voltage to get watt-hours.</p>
+<p><b>Usable energy</b>, also printed as usable capacity, available energy or energy (useable), is what can be discharged between the limits the battery management system (BMS) enforces, at the rate and temperature the manufacturer tested. GoodWe measures the 4.8 kWh of its Lynx Home U LX U5.4-L at 90% depth of discharge, 0.5C and 25 °C; BYD measures the 5.12 kWh of its Battery-Box Premium HVS 5.1 as DC usable energy at 100% depth of discharge, 0.2C and 25 °C.</p>
+<p><b>Depth of discharge</b> (DoD) is the share of nominal capacity used in one cycle. If a sheet gives nominal energy and DoD but no usable figure, usable energy is approximately nominal energy × DoD.</p>
+<h2>Why manufacturers quote both</h2>
+<p>Keeping a cell away from its fully charged and fully discharged voltage limits slows its ageing, so many systems hold back a margin at one or both ends. The nominal figure tells you how much cell capacity you are paying for; the usable figure tells you how much energy you will get. Sheets differ in which they lead with. BYD and Sungrow give only a usable figure, and Sungrow describes its depth of discharge as "Max. 100% DOD (settable)". Tesla gives a nominal battery energy of 13.5 kWh for the Powerwall 3, stated as AC, after its built-in inverter.</p>
+<p>A depth of discharge can also be a recommendation rather than a limit. The Dyness Powerbox F-2.5's 2.28 kWh of usable energy is 95% of its 2.4 kWh nominal, but the same sheet recommends 90% depth of discharge, which would give 2.16 kWh, and its 6000-cycle figure is tested at 90%.</p>
+<h2>Examples from the comparison pages</h2>
+<div class="table-card" tabindex="0" role="region" aria-label="Nominal and usable energy, scrolls sideways">
+<table>
+<caption class="vh">Nominal and usable energy of eight batteries, from their datasheets</caption>
+<thead><tr><th scope="col">Battery</th><th scope="col">Nominal</th><th scope="col">Usable</th><th scope="col">Usable ÷ nominal</th><th scope="col">DoD on the sheet</th></tr></thead>
+<tbody>
+<tr><th scope="row">Alpha ESS SMILE-G3-BAT-10.1P</th><td>10.1 kWh</td><td>9.6 kWh</td><td>95%</td><td>95%</td></tr>
+<tr><th scope="row">Pylontech US5000</th><td>4.8 kWh</td><td>4.56 kWh</td><td>95%</td><td>95%</td></tr>
+<tr><th scope="row">Dyness Powerbox F-2.5</th><td>2.4 kWh</td><td>2.28 kWh</td><td>95%</td><td>90%, recommended</td></tr>
+<tr><th scope="row">GoodWe Lynx Home U LX U5.4-L</th><td>5.4 kWh</td><td>4.8 kWh</td><td>89%</td><td>90%, in a footnote</td></tr>
+<tr><th scope="row">Enphase IQ Battery 5P</th><td>—</td><td>5 kWh</td><td>—</td><td>—</td></tr>
+<tr><th scope="row">BYD Battery-Box Premium HVS 5.1</th><td>—</td><td>5.12 kWh</td><td>—</td><td>100%, as a test condition</td></tr>
+<tr><th scope="row">Sungrow SBR064</th><td>—</td><td>6.4 kWh</td><td>—</td><td>Up to 100%, settable</td></tr>
+<tr><th scope="row">Tesla Powerwall 3</th><td>13.5 kWh, AC</td><td>—</td><td>—</td><td>—</td></tr>
+</tbody>
+</table>
+</div>
+<p>The ratios are arithmetic on the published figures. Where a sheet gives both numbers, the usable share is within about a point of its stated DoD, except for Dyness, whose usable figure implies 95% against a recommended 90%. On the comparison pages, nominal and usable energy are separate rows and a dash means the sheet's text gave no value; the best-value dot only compares values in a row's own unit, never ampere-hours against kilowatt-hours.</p>
+<h2>Normalising two datasheets</h2>
+<ol>
+<li>Take the usable energy if the sheet gives it; otherwise use nominal energy × DoD, and note that you did.</li>
+<li>Convert ampere-hours to kilowatt-hours with the nominal voltage.</li>
+<li>Check the boundary: energy at the battery's DC terminals is not the same as AC energy after an inverter, which already includes conversion losses.</li>
+<li>Check the conditions: the rate, the temperature, beginning of life, and whether the DoD is a limit or a recommendation.</li>
+<li>Price on usable kilowatt-hours, and for lifetime cost multiply usable energy by the warranted cycles or energy throughput.</li>
+</ol>
+<p>For the other rows that need the same care, see <a href="how-to-compare-battery-datasheets.html">How to compare battery storage datasheets</a>.</p>
+<p class="callout"><b>Verify against the manufacturer's datasheet.</b> The figures here come from the datasheets behind our comparison pages, each linked from its page. Datasheets are revised and regional versions differ, so check every number against the manufacturer's current datasheet before you size, price or buy.</p>
+<h2 id="faq">FAQ</h2>
+<h3>What is depth of discharge?</h3>
+<p>The share of a battery's nominal capacity used in one cycle. A 10 kWh battery cycled at 90% depth of discharge delivers about 9 kWh per cycle.</p>
+<h3>Can usable energy be higher than nominal energy?</h3>
+<p>Not when both are measured the same way. If a sheet shows usable energy above nominal, the two figures come from different conditions or definitions, so ask the manufacturer which applies.</p>
+<h3>Which figure should I use to compare prices?</h3>
+<p>Usable energy, measured at the same point (DC or AC) on both sheets. Price per usable kWh is the fair basis; price per nominal kWh flatters a battery that holds back more of its capacity.</p>
+<h2>Related comparisons</h2>
+<ul>
+<li><a href="../compare/alpha-ess-smile-g3-bat-10-1p-vs-pylontech-us5000.html">Alpha ESS SMILE-G3-BAT-10.1P vs Pylontech US5000</a></li>
+<li><a href="../compare/dyness-powerbox-f-2-5-vs-goodwe-lynx-home-u-lx-u5-4-l.html">Dyness Powerbox F-2.5 vs GoodWe Lynx Home U LX U5.4-L</a></li>
+<li><a href="../compare/byd-battery-box-premium-hvs-5-1-vs-sungrow-sbr064.html">BYD Battery-Box Premium HVS 5.1 vs Sungrow SBR064</a></li>
+</ul>
+<p><a class="btn primary lg" href="../">Compare your own datasheets</a></p>
+</article>
+</main>
+<footer class="foot"><a href="./">All guides</a><a href="../compare/">All comparisons</a><a href="../privacy.html">Privacy</a><a href="https://cool2568.github.io/tender-radar-site/terms.html">Terms</a></footer>
+</body>
+</html>

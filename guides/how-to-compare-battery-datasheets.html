@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>How to compare battery storage datasheets</title>
+<meta name="description" content="The battery datasheet rows that matter and how to put them on one basis: usable energy, power and C-rate, round-trip efficiency, cycle life and warranty.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://cool2568.github.io/spec-normaliser-site/guides/how-to-compare-battery-datasheets.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Spec Sheet Normaliser">
+<meta property="og:title" content="How to compare battery storage datasheets">
+<meta property="og:description" content="The battery datasheet rows that matter and how to put them on one basis: usable energy, power and C-rate, round-trip efficiency, cycle life and warranty.">
+<meta property="og:url" content="https://cool2568.github.io/spec-normaliser-site/guides/how-to-compare-battery-datasheets.html">
+<meta property="og:image" content="https://cool2568.github.io/spec-normaliser-site/og/default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../style.css">
+<!-- For search engines: the title, description and FAQ answers below repeat the page's own; edit both together. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "How to compare battery storage datasheets",
+      "description": "The battery datasheet rows that matter and how to put them on one basis: usable energy, power and C-rate, round-trip efficiency, cycle life and warranty.",
+      "image": "https://cool2568.github.io/spec-normaliser-site/og/default.png",
+      "datePublished": "2026-10-24",
+      "dateModified": "2026-10-24",
+      "author": {
+        "@type": "Organization",
+        "name": "Spec Sheet Normaliser",
+        "url": "https://cool2568.github.io/spec-normaliser-site/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Spec Sheet Normaliser",
+        "url": "https://cool2568.github.io/spec-normaliser-site/"
+      },
+      "mainEntityOfPage": "https://cool2568.github.io/spec-normaliser-site/guides/how-to-compare-battery-datasheets.html"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Spec Sheet Normaliser",
+          "item": "https://cool2568.github.io/spec-normaliser-site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Guides",
+          "item": "https://cool2568.github.io/spec-normaliser-site/guides/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "How to compare battery storage datasheets",
+          "item": "https://cool2568.github.io/spec-normaliser-site/guides/how-to-compare-battery-datasheets.html"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Should I compare batteries on nominal or usable energy?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "On usable energy, measured at the same point (DC terminals or AC output) and under the same conditions. Nominal energy is the cells' rated content, part of which the BMS keeps in reserve."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does C-rate mean on a battery datasheet?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Current as a multiple of capacity. 1C discharges a full battery in about an hour and 0.5C in about two, so a 10 kWh battery at 0.5C delivers about 5 kW."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is a higher cycle count always better?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Only if the counts were measured the same way: the same depth of discharge, rate, temperature and end-of-life capacity."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body class="doc">
+<header class="top">
+<a class="brand" href="../"><svg class="logo" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7"/><path d="M8.5 7.5h11a1.5 1.5 0 0 1 1.5 1.5v10a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 7 19V9a1.5 1.5 0 0 1 1.5-1.5zM7 12h14M12.5 12v8.5"/></svg><b>Spec Sheet Normaliser</b></a>
+<a class="btn" href="../">Open the app</a>
+</header>
+<main>
+<nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="../">Spec Sheet Normaliser</a></li><li><a href="./">Guides</a></li><li aria-current="page">How to compare battery storage datasheets</li></ol></nav>
+<article>
+<h1>How to compare battery storage datasheets</h1>
+<p class="lede">Two battery datasheets rarely quote the same quantities under the same conditions, so a fair comparison starts by putting energy, power, efficiency and life on one basis. This guide goes through the rows that matter, what each one leaves out, and a checklist to run before you shortlist.</p>
+<h2>Start with usable energy, not the model name</h2>
+<p>Model names usually carry the nominal figure. The Alpha ESS SMILE-G3-BAT-10.1P is 10.1 kWh nominal and the GoodWe Lynx Home U LX U5.4-L is 5.4 kWh rated, but their datasheets give 9.6 kWh and 4.8 kWh of usable energy. Usable energy is what the battery management system (BMS) lets you discharge, so it is the number to size and price on.</p>
+<p>Check where it is measured, too. Most sheets state energy at the battery's DC terminals; Tesla states the Powerwall 3's 13.5 kWh as AC, after its built-in inverter. <a href="usable-vs-nominal-energy.html">Usable energy vs nominal energy</a> covers the conversion.</p>
+<h2>Power, current and C-rate</h2>
+<p>C-rate is current relative to capacity: at 1C a full battery empties in about an hour, at 0.5C in about two. Power is current times voltage, so one row checks another. The BYD Battery-Box Premium HVS 5.1 allows 25 A at 204.8 V nominal, about 5.1 kW, or 1C on its 5.12 kWh. The Alpha ESS gives 52.5 A at 96 V, about 5.0 kW, or 0.5C on 10.1 kWh. The Powerwall 3 charges at up to 5 kW but discharges at 11.5 kW.</p>
+<p>Check the voltage behind a power figure. GoodWe's 2.88 kW maximum discharge power equals its 50 A at 57.6 V, the top of its voltage range; at the 51.2 V nominal voltage, 50 A is 2.56 kW. Keep continuous ratings apart from peak ones, which come with a duration in seconds, and read the footnotes: several sheets say power derates with temperature or state of charge.</p>
+<p>Voltage also decides compatibility: the inverter's battery input window must cover the battery's whole range, 44.5 V to 53.5 V for the Pylontech US5000 but 160 V to 240 V for the BYD HVS 5.1.</p>
+<h2>Round-trip efficiency: the same boundary</h2>
+<p>Round-trip efficiency (RTE) is the share of charged energy you get back, and where it is measured matters. Enphase's IQ Battery 5P sheet gives 90% AC round-trip efficiency, from AC through the battery and back to AC, and 96% DC round-trip efficiency for the battery module alone. BYD gives at least 96% without saying which. Compare like with like; <a href="round-trip-efficiency.html">Round-trip efficiency</a> explains how.</p>
+<h2>Cycle life: read the conditions</h2>
+<p>A cycle count means little without its test conditions: the depth of discharge per cycle, the charge and discharge rate, the temperature, and the end-of-life capacity at which the battery counts as worn out. Dyness states at least 6000 cycles at 0.2C, 25 °C and 90% depth of discharge; Alpha ESS footnotes its 8000 "under specific test conditions" without listing them. A count to 70% remaining capacity is not comparable with one to 80%, and a count at 0.2C says little about a battery cycled at 1C.</p>
+<p>Cycles times usable energy gives an upper bound on lifetime throughput: 6000 × 4.56 kWh is about 27 MWh for the Pylontech US5000, before capacity fade.</p>
+<h2>Warranty and design life</h2>
+<p>A warranty usually has three parts: a term in years, a cap in cycles or energy throughput (whichever comes first), and the capacity guaranteed at the end. Enphase words it as more than 60% capacity, up to 15 years or 6000 cycles, whichever occurs first. BYD's 10 years says "conditions apply" and points to a separate warranty letter: read it. A design life is not a warranty: Pylontech's 15 years is a design life at 25 °C. The comparison pages put both in one row, so check which a sheet means.</p>
+<h2>Temperature, enclosure and certifications</h2>
+<p>Several sheets give a narrower range for charging than for discharging: Pylontech charges from 0 °C but discharges from −10 °C. The comparison pages show the discharge range. The IP rating (IEC 60529) says where the unit can go: IP20, as on the Pylontech US5000, is for indoors, while IP65 and IP67 are dust-tight and protected against water jets and temporary immersion respectively.</p>
+<p>For safety, look for IEC 62619 (safety of industrial lithium cells and batteries, which covers stationary storage), UL 1973 (batteries for stationary use), UL 9540 (the complete energy storage system) and UL 9540A (the test method for thermal runaway fire propagation), plus UN 38.3 for transport. Ask for each certificate and check that it names the model and configuration you are buying.</p>
+<h2>Checklist</h2>
+<div class="table-card" tabindex="0" role="region" aria-label="Checklist, scrolls sideways">
+<table>
+<caption class="vh">Battery datasheet checklist: one row per field</caption>
+<thead><tr><th scope="col">Row</th><th scope="col">Check</th></tr></thead>
+<tbody>
+<tr><th scope="row">Usable energy</th><td>DC or AC; test rate and temperature; beginning of life</td></tr>
+<tr><th scope="row">Nominal energy and DoD</th><td>Whether the DoD is a limit or a recommendation</td></tr>
+<tr><th scope="row">Power and current</th><td>Continuous charge and discharge at nominal voltage; peaks with their duration</td></tr>
+<tr><th scope="row">Voltage range</th><td>Inside the inverter's battery input window</td></tr>
+<tr><th scope="row">Round-trip efficiency</th><td>DC or AC; rate and temperature</td></tr>
+<tr><th scope="row">Cycle life</th><td>Depth of discharge, rate, temperature and end-of-life capacity</td></tr>
+<tr><th scope="row">Warranty</th><td>Years, cycle or throughput cap, capacity at the end, conditions</td></tr>
+<tr><th scope="row">Temperature and IP</th><td>Charge and discharge ranges, derating, indoor or outdoor</td></tr>
+<tr><th scope="row">Certifications</th><td>The certificate and its scope, not just the standard's name</td></tr>
+</tbody>
+</table>
+</div>
+<p class="callout"><b>Verify against the manufacturer's datasheet.</b> The figures here come from the datasheets behind our comparison pages, each linked from its page. Datasheets are revised, so check every number against the manufacturer's current datasheet, and warranty terms against the warranty itself, before you specify or buy.</p>
+<h2 id="faq">FAQ</h2>
+<h3>Should I compare batteries on nominal or usable energy?</h3>
+<p>On usable energy, measured at the same point (DC terminals or AC output) and under the same conditions. Nominal energy is the cells' rated content, part of which the BMS keeps in reserve.</p>
+<h3>What does C-rate mean on a battery datasheet?</h3>
+<p>Current as a multiple of capacity. 1C discharges a full battery in about an hour and 0.5C in about two, so a 10 kWh battery at 0.5C delivers about 5 kW.</p>
+<h3>Is a higher cycle count always better?</h3>
+<p>Only if the counts were measured the same way: the same depth of discharge, rate, temperature and end-of-life capacity.</p>
+<h2>Related comparisons</h2>
+<ul>
+<li><a href="../compare/alpha-ess-smile-g3-bat-10-1p-vs-byd-battery-box-premium-hvs-5-1.html">Alpha ESS SMILE-G3-BAT-10.1P vs BYD Battery-Box Premium HVS 5.1</a></li>
+<li><a href="../compare/goodwe-lynx-home-u-lx-u5-4-l-vs-pylontech-us5000.html">GoodWe Lynx Home U LX U5.4-L vs Pylontech US5000</a></li>
+<li><a href="../compare/enphase-iq-battery-5p-vs-tesla-powerwall-3.html">Enphase IQ Battery 5P vs Tesla Powerwall 3</a></li>
+</ul>
+<p><a class="btn primary lg" href="../">Compare your own datasheets</a></p>
+</article>
+</main>
+<footer class="foot"><a href="./">All guides</a><a href="../compare/">All comparisons</a><a href="../privacy.html">Privacy</a><a href="https://cool2568.github.io/tender-radar-site/terms.html">Terms</a></footer>
+</body>
+</html>

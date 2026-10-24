@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Solar module datasheets explained: Pmax, Voc, Isc, Vmp, Imp, temperature coefficients, NMOT</title>
+<meta name="description" content="What each row of a solar module datasheet means: STC and NMOT, Pmax, Vmp, Imp, Voc and Isc, temperature coefficients and power classes, with worked checks.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://cool2568.github.io/spec-normaliser-site/guides/solar-module-datasheet-explained.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Spec Sheet Normaliser">
+<meta property="og:title" content="Solar module datasheets explained: Pmax, Voc, Isc, Vmp, Imp, temperature coefficients, NMOT">
+<meta property="og:description" content="What each row of a solar module datasheet means: STC and NMOT, Pmax, Vmp, Imp, Voc and Isc, temperature coefficients and power classes, with worked checks.">
+<meta property="og:url" content="https://cool2568.github.io/spec-normaliser-site/guides/solar-module-datasheet-explained.html">
+<meta property="og:image" content="https://cool2568.github.io/spec-normaliser-site/og/default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../style.css">
+<!-- For search engines: the title, description and FAQ answers below repeat the page's own; edit both together. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "Solar module datasheets explained: Pmax, Voc, Isc, Vmp, Imp, temperature coefficients, NMOT",
+      "description": "What each row of a solar module datasheet means: STC and NMOT, Pmax, Vmp, Imp, Voc and Isc, temperature coefficients and power classes, with worked checks.",
+      "image": "https://cool2568.github.io/spec-normaliser-site/og/default.png",
+      "datePublished": "2026-10-24",
+      "dateModified": "2026-10-24",
+      "author": {
+        "@type": "Organization",
+        "name": "Spec Sheet Normaliser",
+        "url": "https://cool2568.github.io/spec-normaliser-site/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Spec Sheet Normaliser",
+        "url": "https://cool2568.github.io/spec-normaliser-site/"
+      },
+      "mainEntityOfPage": "https://cool2568.github.io/spec-normaliser-site/guides/solar-module-datasheet-explained.html"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Spec Sheet Normaliser",
+          "item": "https://cool2568.github.io/spec-normaliser-site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Guides",
+          "item": "https://cool2568.github.io/spec-normaliser-site/guides/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Solar module datasheets explained: Pmax, Voc, Isc, Vmp, Imp, temperature coefficients, NMOT",
+          "item": "https://cool2568.github.io/spec-normaliser-site/guides/solar-module-datasheet-explained.html"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the difference between STC and NMOT?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "STC is the laboratory reference: 1000 W/m², 25 °C cell temperature and the AM 1.5 spectrum. NMOT is the temperature a working module reaches at 800 W/m², 20 °C ambient and 1 m/s wind, and power at NMOT is nearer everyday output."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does Voc matter for string design?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Voc rises as the module gets colder. The string's Voc at the coldest expected cell temperature must stay below the module's maximum system voltage and the inverter's maximum input voltage."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is a higher-wattage module always better?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Wattage grows with module size, so compare efficiency, the temperature coefficient of Pmax, price per watt, and whether the size and weight suit the roof or structure."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body class="doc">
+<header class="top">
+<a class="brand" href="../"><svg class="logo" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7"/><path d="M8.5 7.5h11a1.5 1.5 0 0 1 1.5 1.5v10a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 7 19V9a1.5 1.5 0 0 1 1.5-1.5zM7 12h14M12.5 12v8.5"/></svg><b>Spec Sheet Normaliser</b></a>
+<a class="btn" href="../">Open the app</a>
+</header>
+<main>
+<nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="../">Spec Sheet Normaliser</a></li><li><a href="./">Guides</a></li><li aria-current="page">Solar module datasheets explained: Pmax, Voc, Isc, Vmp, Imp, temperature coefficients, NMOT</li></ol></nav>
+<article>
+<h1>Solar module datasheets explained: Pmax, Voc, Isc, Vmp, Imp, temperature coefficients, NMOT</h1>
+<p class="lede">A module datasheet describes one current–voltage curve measured under standard test conditions, plus the numbers that say how that curve moves with temperature and light. Read the rows together and compare modules on efficiency and temperature behaviour, not on the wattage in the model name.</p>
+<h2>Standard test conditions</h2>
+<p>The electrical data on a datasheet is measured at standard test conditions (STC): 1000 W/m² irradiance, 25 °C cell temperature and the AM 1.5 reference spectrum of IEC 60904-3. STC is a laboratory reference, not a forecast: in sunshine cells run well above 25 °C, so outdoor power is lower.</p>
+<h2>The five electrical rows</h2>
+<ul>
+<li><b>Isc</b>, short-circuit current: the current at zero volts, the most the module makes; it rises in proportion to irradiance.</li>
+<li><b>Voc</b>, open-circuit voltage: the voltage at zero current, the highest the module makes.</li>
+<li><b>Vmp</b> and <b>Imp</b>: voltage and current at the maximum power point, where the inverter's tracker holds the module.</li>
+<li><b>Pmax</b>: the power at that point, so Pmax = Vmp × Imp.</li>
+</ul>
+<p>The rows check each other. Canadian Solar's TOPBiHiKu6 at 640 W gives Vmp 42 V and Imp 15.26 A, which multiply to 641 W, a match within rounding. A column that doesn't multiply out deserves a question: on the JinkoSolar Tiger Neo 54HL4-B sheet, the 420 W column repeats the 415 W column's Vmp (31.95 V), Imp (12.99 A) and efficiency (21.25%), and 31.95 × 12.99 is 415 W.</p>
+<div class="table-card" tabindex="0" role="region" aria-label="Three modules' datasheet rows, scrolls sideways">
+<table>
+<caption class="vh">Electrical and temperature rows of three modules at their highest power class</caption>
+<thead><tr><th scope="col">Row</th><th scope="col">Canadian Solar TOPBiHiKu6, 640 W</th><th scope="col">Polycab G2G TOPCon, 605 W</th><th scope="col">Emmvee E530-540HCM144-B, 540 W</th></tr></thead>
+<tbody>
+<tr><th scope="row">Vmp × Imp</th><td>42 V × 15.26 A</td><td>43.12 V × 14.03 A</td><td>41.54 V × 13 A</td></tr>
+<tr><th scope="row">Voc and Isc</th><td>49.4 V, 16.32 A</td><td>51.79 V, 14.79 A</td><td>49.5 V, 13.62 A</td></tr>
+<tr><th scope="row">Module efficiency</th><td>23.7%</td><td>23.42%</td><td>20.9%</td></tr>
+<tr><th scope="row">Temperature coefficient of Pmax</th><td>−0.29 %/°C</td><td>−0.30 %/°C</td><td>−0.35 %/°C</td></tr>
+<tr><th scope="row">NMOT or NOCT</th><td>41 °C, NMOT</td><td>45 °C, NOCT</td><td>45 °C, NOCT</td></tr>
+</tbody>
+</table>
+</div>
+<h2>Efficiency and power classes</h2>
+<p>Module efficiency is Pmax divided by the light falling on the module at STC. The TOPBiHiKu6 measures 2382 × 1134 mm, 2.70 m², which receives 2701 W at 1000 W/m², and 640 ÷ 2701 is 23.7%. Wattage grows with area, so a 640 W, 132-cell module and the 375 W, 120-cell Vikram Solar Prexos are not rivals on watts: compare efficiency and price per watt.</p>
+<p>One datasheet covers a family of power classes, sorted by flash test: Polycab's G2G sheet lists six, from 580 W to 605 W. Compare like classes, or the class you will be supplied. Power tolerance, 0 to +10 W for the TOPBiHiKu6 and 0 to +5 W for the G2G, means every module measured at or above its class; measurement uncertainty, which Canadian Solar states as ±3%, is separate.</p>
+<h2>Temperature coefficients</h2>
+<p>Each coefficient is the change per degree of cell temperature away from 25 °C. The Pmax coefficient drives yield: at a cell temperature of 65 °C, 40 degrees above STC, a module at −0.29 %/°C loses about 11.6% of its power and one at −0.35 %/°C about 14%. On our comparison pages the modules listed as TOPCon give −0.29 to −0.30 %/°C and those listed as mono PERC −0.35 %/°C.</p>
+<p>The Voc coefficient is negative too, −0.25 to −0.28 %/°C on our pages, so voltage rises in the cold and string design uses the coldest expected cell temperature. For the TOPBiHiKu6, 49.4 V at −0.25 %/°C becomes about 53.7 V at −10 °C, 35 degrees below STC: 49.4 × (1 + 0.0025 × 35). Against its 1500 V maximum system voltage that allows at most 27 modules in series, before the inverter's input limit and local codes. The Isc coefficient is small and positive, +0.04 to +0.05 %/°C.</p>
+<h2>NMOT, NOCT and power at NMOT</h2>
+<p>NMOT, the nominal module operating temperature in IEC 61215 since its 2016 edition, is the temperature a module reaches at 800 W/m², 20 °C ambient and 1 m/s wind, mounted on an open rack and working at its maximum power point. NOCT, from earlier editions, uses the same irradiance, ambient and wind but leaves the module open-circuited. A module delivering power turns part of the light into electricity rather than heat, so it runs cooler: the two are not interchangeable. Canadian Solar gives an NMOT of 41 °C; Polycab, Emmvee and Vikram give a NOCT of 45 °C, Waaree 43 °C. Our pages put both in one row, "NMOT or NOCT", so check the label on the sheet.</p>
+<p>Power at NMOT is lower than at STC because the light is weaker and the cells warmer: 484 W against 640 W for the TOPBiHiKu6, about 76%.</p>
+<h2>System voltage, warranty and certification rows</h2>
+<p>Check the maximum system voltage (1000 V for the Tiger Neo 54HL4-B, 1500 V for the other modules on our pages). Warranties come in two parts: product, 12 years on the four sheets here that give one, and power, 25 to 30 years, with 1% to 2% first-year degradation. IEC 61215 covers design qualification and IEC 61730 safety; IEC 61701 (salt mist) and IEC 62716 (ammonia) matter near the coast and on farms.</p>
+<p class="callout"><b>Verify against the manufacturer's datasheet.</b> The figures here come from the datasheets behind our comparison pages, each linked from its page. Datasheets are revised, so check every number against the manufacturer's current datasheet before you design a string or order.</p>
+<h2 id="faq">FAQ</h2>
+<h3>What is the difference between STC and NMOT?</h3>
+<p>STC is the laboratory reference: 1000 W/m², 25 °C cell temperature and the AM 1.5 spectrum. NMOT is the temperature a working module reaches at 800 W/m², 20 °C ambient and 1 m/s wind, and power at NMOT is nearer everyday output.</p>
+<h3>Why does Voc matter for string design?</h3>
+<p>Voc rises as the module gets colder. The string's Voc at the coldest expected cell temperature must stay below the module's maximum system voltage and the inverter's maximum input voltage.</p>
+<h3>Is a higher-wattage module always better?</h3>
+<p>No. Wattage grows with module size, so compare efficiency, the temperature coefficient of Pmax, price per watt, and whether the size and weight suit the roof or structure.</p>
+<h2>Related comparisons</h2>
+<ul>
+<li><a href="../compare/canadian-solar-topbihiku6-cs6-2-66tb-vs-polycab-g2g-topcon.html">Canadian Solar TOPBiHiKu6 CS6.2-66TB vs Polycab G2G TOPCon</a></li>
+<li><a href="../compare/emmvee-e530-540hcm144-b-vs-vikram-solar-prexos.html">Emmvee E530-540HCM144-B vs Vikram Solar Prexos</a></li>
+<li><a href="../compare/canadian-solar-topbihiku6-cs6-2-66tb-vs-jinkosolar-tiger-neo-54hl4-b.html">Canadian Solar TOPBiHiKu6 CS6.2-66TB vs JinkoSolar Tiger Neo 54HL4-B</a></li>
+</ul>
+<p><a class="btn primary lg" href="../">Compare your own datasheets</a></p>
+</article>
+</main>
+<footer class="foot"><a href="./">All guides</a><a href="../compare/">All comparisons</a><a href="../privacy.html">Privacy</a><a href="https://cool2568.github.io/tender-radar-site/terms.html">Terms</a></footer>
+</body>
+</html>

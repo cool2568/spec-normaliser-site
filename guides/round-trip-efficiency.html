@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Round-trip efficiency: what it means and why datasheets differ</title>
+<meta name="description" content="What battery round-trip efficiency measures, why DC and AC figures differ, the test conditions behind them, and how to compare two datasheets fairly.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://cool2568.github.io/spec-normaliser-site/guides/round-trip-efficiency.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Spec Sheet Normaliser">
+<meta property="og:title" content="Round-trip efficiency: what it means and why datasheets differ">
+<meta property="og:description" content="What battery round-trip efficiency measures, why DC and AC figures differ, the test conditions behind them, and how to compare two datasheets fairly.">
+<meta property="og:url" content="https://cool2568.github.io/spec-normaliser-site/guides/round-trip-efficiency.html">
+<meta property="og:image" content="https://cool2568.github.io/spec-normaliser-site/og/default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../style.css">
+<!-- For search engines: the title, description and FAQ answers below repeat the page's own; edit both together. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "Round-trip efficiency: what it means and why datasheets differ",
+      "description": "What battery round-trip efficiency measures, why DC and AC figures differ, the test conditions behind them, and how to compare two datasheets fairly.",
+      "image": "https://cool2568.github.io/spec-normaliser-site/og/default.png",
+      "datePublished": "2026-10-24",
+      "dateModified": "2026-10-24",
+      "author": {
+        "@type": "Organization",
+        "name": "Spec Sheet Normaliser",
+        "url": "https://cool2568.github.io/spec-normaliser-site/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Spec Sheet Normaliser",
+        "url": "https://cool2568.github.io/spec-normaliser-site/"
+      },
+      "mainEntityOfPage": "https://cool2568.github.io/spec-normaliser-site/guides/round-trip-efficiency.html"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Spec Sheet Normaliser",
+          "item": "https://cool2568.github.io/spec-normaliser-site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Guides",
+          "item": "https://cool2568.github.io/spec-normaliser-site/guides/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Round-trip efficiency: what it means and why datasheets differ",
+          "item": "https://cool2568.github.io/spec-normaliser-site/guides/round-trip-efficiency.html"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Why is AC round-trip efficiency lower than DC?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "An AC figure includes the inverter's conversions in both directions, AC to DC when charging and DC to AC when discharging, on top of the battery's own losses. Enphase's IQ Battery 5P sheet gives 90% AC and 96% DC for the same product."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does round-trip efficiency change as a battery ages?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Internal resistance rises with age, so more energy turns into heat on each cycle. A datasheet figure describes a new battery unless it says otherwise; Tesla's Powerwall 3 sheet says so explicitly."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is round-trip efficiency the same as inverter efficiency?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Inverter efficiency covers one conversion in one direction. Round-trip efficiency covers a full charge and discharge, through the battery and, for an AC figure, through the inverter twice."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body class="doc">
+<header class="top">
+<a class="brand" href="../"><svg class="logo" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7"/><path d="M8.5 7.5h11a1.5 1.5 0 0 1 1.5 1.5v10a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 7 19V9a1.5 1.5 0 0 1 1.5-1.5zM7 12h14M12.5 12v8.5"/></svg><b>Spec Sheet Normaliser</b></a>
+<a class="btn" href="../">Open the app</a>
+</header>
+<main>
+<nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="../">Spec Sheet Normaliser</a></li><li><a href="./">Guides</a></li><li aria-current="page">Round-trip efficiency: what it means and why datasheets differ</li></ol></nav>
+<article>
+<h1>Round-trip efficiency: what it means and why datasheets differ</h1>
+<p class="lede">Round-trip efficiency is the share of the energy put into a battery that comes back out, and its value depends on where the measurement starts and ends and on how the test is run. Two datasheets' percentages are comparable only when both describe the same boundary under similar conditions.</p>
+<h2>Definition</h2>
+<p>Round-trip efficiency (RTE) is the energy discharged divided by the energy charged, over a cycle that starts and ends at the same state of charge. Charge 10 kWh, get 9 kWh back, and the RTE is 90%. The missing energy becomes heat: in the cells' internal resistance, where the loss grows with the square of the current; in the battery management electronics; in any power conversion; and in auxiliary loads such as fans, heaters and standby consumption.</p>
+<h2>DC and AC round-trip efficiency</h2>
+<p>A DC figure is measured at the battery's terminals and covers the cells and battery management. An AC figure is measured at the AC connection, so it also includes the inverter twice: AC to DC to charge, and DC to AC to discharge. For the same battery the AC figure is therefore lower; it is roughly the DC figure times the efficiency of each conversion.</p>
+<p>Enphase's IQ Battery 5P sheet shows both: 90% AC round-trip efficiency, measured "AC to the battery to AC at 50% power rating at 25°C", and 96% DC round-trip efficiency for the battery module. The gap implies the two conversions together pass about 94% of the energy (0.90 ÷ 0.96). Our comparison pages show the 90%, the first round-trip figure on that sheet.</p>
+<p>BYD's Battery-Box Premium HVS 5.1 sheet gives a round-trip efficiency of at least 96% without saying AC or DC. The Battery-Box connects to a separate inverter, so read the figure as battery-side unless BYD says otherwise, and don't set it against Enphase's 90% AC figure.</p>
+<p>Tesla's Powerwall 3 sheet has no round-trip row, so its comparison pages show a dash. It gives a "Solar to Battery to Home/Grid Efficiency" of 89%, at 25 °C, at beginning of life and at 3.3 kW charge and discharge power, and a "Solar to Home/Grid Efficiency" of 97.5% by the CEC weighted method. Both start at the DC solar input and end at the AC output: a third boundary, comparable with neither of the others as it stands.</p>
+<div class="table-card" tabindex="0" role="region" aria-label="Round-trip figures, scrolls sideways">
+<table>
+<caption class="vh">Round-trip efficiency figures on the eight battery datasheets behind our comparison pages, with their boundaries and conditions</caption>
+<thead><tr><th scope="col">Battery</th><th scope="col">Figure on the sheet</th><th scope="col">Boundary</th><th scope="col">Conditions given</th></tr></thead>
+<tbody>
+<tr><th scope="row">BYD Battery-Box Premium HVS 5.1</th><td>≥ 96% round-trip efficiency</td><td>Not stated; battery side</td><td>None</td></tr>
+<tr><th scope="row">Enphase IQ Battery 5P</th><td>90% AC round-trip efficiency</td><td>AC to battery to AC</td><td>50% of rated power, 25 °C</td></tr>
+<tr><th scope="row">Enphase IQ Battery 5P</th><td>96% DC round-trip efficiency</td><td>Battery module, DC</td><td>None</td></tr>
+<tr><th scope="row">Tesla Powerwall 3</th><td>89% solar to battery to home or grid</td><td>DC solar in, AC out</td><td>25 °C, beginning of life, 3.3 kW</td></tr>
+<tr><th scope="row">Alpha ESS, Dyness, GoodWe, Pylontech, Sungrow</th><td>None in the sheet's text</td><td>—</td><td>—</td></tr>
+</tbody>
+</table>
+</div>
+<h2>Test conditions that move the number</h2>
+<ul>
+<li><b>Power.</b> Resistive loss grows with the square of the current, so a slow cycle loses less in the cells; at very low power, fixed losses such as standby consumption weigh more.</li>
+<li><b>Temperature.</b> Internal resistance rises in the cold. Enphase and Tesla both state 25 °C.</li>
+<li><b>State-of-charge window.</b> A partial cycle, say from 10% to 90%, is not comparable with a full one.</li>
+<li><b>Age.</b> Internal resistance rises as a battery ages, so efficiency falls; Tesla states its figure at beginning of life.</li>
+<li><b>Auxiliary loads.</b> Ask whether cooling, heating and standby power are inside the figure.</li>
+</ul>
+<h2>How to compare fairly</h2>
+<ol>
+<li>Find each figure's boundary: DC at the battery, AC to AC through the battery's own inverter, or a mixed path such as solar to battery to home.</li>
+<li>Put both on one boundary. For a DC battery, combine its DC figure with the charge and discharge efficiencies of the inverter it will be paired with; for AC units, compare AC with AC.</li>
+<li>Match the conditions: power, temperature, state-of-charge window and age.</li>
+<li>Ask for the test method. IEC 62933-2-1 sets out unit parameters and test methods for electrical energy storage systems, round-trip efficiency among them.</li>
+<li>Convert to energy: each cycle loses the charged energy × (1 − RTE). Charging 10 kWh a day, 90% loses 1 kWh a day and 96% loses 0.4 kWh.</li>
+</ol>
+<p>Round-trip efficiency is one row of several; <a href="how-to-compare-battery-datasheets.html">How to compare battery storage datasheets</a> covers the rest.</p>
+<p class="callout"><b>Verify against the manufacturer's datasheet.</b> The figures here come from the datasheets behind our comparison pages, each linked from its page. Datasheets are revised and regional versions differ, so check every efficiency figure and its test conditions against the manufacturer's current datasheet before you rely on it.</p>
+<h2 id="faq">FAQ</h2>
+<h3>Why is AC round-trip efficiency lower than DC?</h3>
+<p>An AC figure includes the inverter's conversions in both directions, AC to DC when charging and DC to AC when discharging, on top of the battery's own losses. Enphase's IQ Battery 5P sheet gives 90% AC and 96% DC for the same product.</p>
+<h3>Does round-trip efficiency change as a battery ages?</h3>
+<p>Yes. Internal resistance rises with age, so more energy turns into heat on each cycle. A datasheet figure describes a new battery unless it says otherwise; Tesla's Powerwall 3 sheet says so explicitly.</p>
+<h3>Is round-trip efficiency the same as inverter efficiency?</h3>
+<p>No. Inverter efficiency covers one conversion in one direction. Round-trip efficiency covers a full charge and discharge, through the battery and, for an AC figure, through the inverter twice.</p>
+<h2>Related comparisons</h2>
+<ul>
+<li><a href="../compare/byd-battery-box-premium-hvs-5-1-vs-enphase-iq-battery-5p.html">BYD Battery-Box Premium HVS 5.1 vs Enphase IQ Battery 5P</a></li>
+<li><a href="../compare/enphase-iq-battery-5p-vs-tesla-powerwall-3.html">Enphase IQ Battery 5P vs Tesla Powerwall 3</a></li>
+<li><a href="../compare/byd-battery-box-premium-hvs-5-1-vs-tesla-powerwall-3.html">BYD Battery-Box Premium HVS 5.1 vs Tesla Powerwall 3</a></li>
+</ul>
+<p><a class="btn primary lg" href="../">Compare your own datasheets</a></p>
+</article>
+</main>
+<footer class="foot"><a href="./">All guides</a><a href="../compare/">All comparisons</a><a href="../privacy.html">Privacy</a><a href="https://cool2568.github.io/tender-radar-site/terms.html">Terms</a></footer>
+</body>
+</html>

@@ -641,9 +641,22 @@ dialog.drawer::backdrop { background: rgb(8 12 12 / 0.4); }
 .doc h3 { font-size: 14px; font-weight: 600; }
 .doc p, .doc li { max-width: 75ch; }
 .doc .lede { font-size: 15.5px; }
-.doc ul { margin-bottom: 0; padding-left: 1.25em; }
+.doc ul, .doc ol { margin-bottom: 0; padding-left: 1.25em; }
 .doc li + li { margin-top: 2px; }
 th.product > .pill { display: inline-block; margin-top: var(--s-2); } /* the power class compared, under its name */
+.doc .crumbs { display: flex; flex-wrap: wrap; gap: 2px 8px; padding: 0; list-style: none; color: var(--muted); font-size: 13px; }
+.doc .crumbs li + li { margin: 0; }
+.crumbs li + li::before { content: "/"; margin-right: 8px; color: var(--faint); }
+
+/* Guides (guides/, written by hand): an article in the comparison pages' layout, set for reading. */
+.doc article > * + * { margin-top: var(--s-4); }
+.doc article > h2 { margin-top: var(--s-6); }
+.doc article > h3 { margin-top: var(--s-5); }
+.doc article h3 { font-size: 16px; }
+.doc article p, .doc article li { font-size: 15.5px; line-height: 1.6; }
+.doc article .table-card { min-height: 0; }
+.doc article tbody th[scope="row"] { min-width: 9rem; white-space: normal; }
+.callout { padding: var(--s-3) var(--s-4); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: var(--radius); background: var(--surface); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
